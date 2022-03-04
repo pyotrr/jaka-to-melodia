@@ -1,26 +1,36 @@
 import React, { useEffect } from "react";
 import useURLSearchParams from "../../../utils/hooks/useURLSearchParameters";
 import Loading from "../../layout/Loading";
-import { Navigate } from "react-router-dom";
 import api from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
+import { setCookie } from "../../../utils/cookies";
 
 const LoginRedirect: React.FC = () => {
   const { code } = useURLSearchParams();
-  const { token, setToken } = useAuth();
+  const { setToken } = useAuth();
 
   useEffect(() => {
     if (!code) return;
     api.Auth.getAccessToken(code).then((res) => {
       console.log(res);
       if (res.success) {
+        const refreshTokenExpirationDate = new Date();
+        refreshTokenExpirationDate.setDate(
+          refreshTokenExpirationDate.getDate() + 7
+        );
         setToken(res.accessToken);
+        setCookie(
+          "refreshToken",
+          `${
+            res.refreshToken
+          }; expires=${refreshTokenExpirationDate.toUTCString()}; samesite=strict`
+        );
       }
+      return null;
     });
   }, [code, setToken]);
 
-  if (!token) return <Loading />;
-  return <Navigate to={"/"} replace />;
+  return <Loading />;
 };
 
 export default LoginRedirect;

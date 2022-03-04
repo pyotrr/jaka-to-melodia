@@ -6,3 +6,7 @@ export const encodedAuthHeader = (): string => {
     `${config.clientId}:${config.clientSecret}`
   ).toString("base64")}`;
 };
+
+export const apiAuthHeader = (accessToken: string): string => {
+  return `Bearer ${accessToken}`;
+};

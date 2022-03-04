@@ -1,5 +1,6 @@
 import Auth from "./Auth";
-import { encodedAuthHeader } from "../utils/constants";
+import Playlists from "./Playlists";
+import { apiAuthHeader } from "../utils/authorization";
 
 export type RequestResult = {
   success: boolean;
@@ -13,22 +14,22 @@ export const makeAPIRequest = async ({
   body,
   headers,
   makeAuthRequest = false,
-  authorize = false,
+  accessToken,
 }: {
   path: string;
   method: RequestMethod;
   body?: any;
   headers?: any;
   makeAuthRequest?: boolean;
-  authorize?: boolean;
+  accessToken?: string;
 }): Promise<Response> => {
   const requestPath = "https://api.spotify.com/v1";
   const authRequestPath = "https://accounts.spotify.com";
 
   const defaultHeaders = new Headers();
   defaultHeaders.append("Content-Type", "application/json");
-  if (authorize) {
-    defaultHeaders.append("Authorization", encodedAuthHeader());
+  if (accessToken) {
+    defaultHeaders.append("Authorization", apiAuthHeader(accessToken));
   }
 
   return window.fetch(
@@ -43,6 +44,7 @@ export const makeAPIRequest = async ({
 
 const api = {
   Auth,
+  Playlists,
 };
 
 export default api;
