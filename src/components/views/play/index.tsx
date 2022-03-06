@@ -1,27 +1,25 @@
-import React, { useEffect, useState } from "react";
-import api from "../../../api";
-import { useAuth } from "../../../contexts/AuthContext";
-import useIsMounted from "../../../utils/hooks/useIsMounted";
+import React from "react";
 import { Playlist } from "../../../api/Playlists";
+import usePlaylists from "../../../utils/hooks/usePlaylists";
+import Loading from "../../layout/Loading";
 
 const Home: React.FC = () => {
-  const { token } = useAuth();
-  const isMountedPredicate = useIsMounted();
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const { loading, playlists } = usePlaylists();
 
-  useEffect(() => {
-    if (!token) return;
-    api.Playlists.getUserPlaylists(token).then((res) => {
-      if (isMountedPredicate()) {
-        setPlaylists(res.playlists);
-      }
-    });
-  }, [isMountedPredicate, token]);
+  if (loading) return <Loading />;
 
   return (
     <div>
       {playlists.map((playlist: Playlist) => (
-        <div key={playlist.id}>
+        <div
+          key={playlist.id}
+          style={{ display: "flex", marginBottom: "0.5rem" }}
+        >
+          <img
+            src={playlist.images[0]?.url}
+            alt={"img"}
+            style={{ width: "100px", height: "100px" }}
+          />
           <p>{playlist.name}</p>
         </div>
       ))}

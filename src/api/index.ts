@@ -8,6 +8,8 @@ export type RequestResult = {
 
 type RequestMethod = "POST" | "GET";
 
+const REQUEST_TIMEOUT_TIME = 5000;
+
 export const makeAPIRequest = async ({
   path,
   method,
@@ -22,7 +24,10 @@ export const makeAPIRequest = async ({
   headers?: any;
   makeAuthRequest?: boolean;
   accessToken?: string;
-}): Promise<Response> => {
+}): Promise<any> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_TIME);
+
   const requestPath = "https://api.spotify.com/v1";
   const authRequestPath = "https://accounts.spotify.com";
 
@@ -32,14 +37,26 @@ export const makeAPIRequest = async ({
     defaultHeaders.append("Authorization", apiAuthHeader(accessToken));
   }
 
-  return window.fetch(
-    `${makeAuthRequest ? authRequestPath : requestPath}${path}`,
-    {
+  return window
+    .fetch(`${makeAuthRequest ? authRequestPath : requestPath}${path}`, {
       method,
       headers: headers ? headers : defaultHeaders,
       ...(method === "GET" || !body ? {} : { body: JSON.stringify(body) }),
-    }
-  );
+      signal: controller.signal,
+    })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Server responded with status ${res.status}`);
+      }
+      clearTimeout(timeoutId);
+      return res.json();
+    })
+    .catch((e) => {
+      if (e.name === "AbortError") {
+        throw new Error("Request timed out");
+      }
+      throw e;
+    });
 };
 
 const api = {

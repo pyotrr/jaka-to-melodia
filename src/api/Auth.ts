@@ -43,7 +43,7 @@ const Auth: IAuth = {
       method: "POST",
       headers,
       makeAuthRequest: true,
-    }).then((res) => res.json());
+    });
 
     return {
       success: Boolean(result.access_token),
@@ -68,7 +68,7 @@ const Auth: IAuth = {
       method: "POST",
       headers,
       makeAuthRequest: true,
-    }).then((res) => res.json());
+    });
 
     return {
       success: Boolean(result.access_token),

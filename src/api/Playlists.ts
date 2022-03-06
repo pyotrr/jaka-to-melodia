@@ -29,7 +29,7 @@ const Playlists: IPlaylists = {
       path: "/me/playlists",
       accessToken: token,
       method: "GET",
-    }).then((res) => res.json());
+    });
 
     return {
       success: Boolean(response.items),
