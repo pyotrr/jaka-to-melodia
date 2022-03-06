@@ -1,7 +1,17 @@
 import { makeAPIRequest, RequestResult } from "./index";
 
+export type Playlist = {
+  id: string;
+  name: string;
+  images: Array<{ url: string }>;
+  tracks: {
+    href: string;
+    total: number;
+  };
+};
+
 type GetUserPlaylistsResult = {
-  playlists: any[];
+  playlists: Playlist[];
   total: number;
 };
 
