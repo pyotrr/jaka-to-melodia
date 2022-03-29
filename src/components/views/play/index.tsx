@@ -1,30 +1,31 @@
-import React from "react";
-import { Playlist } from "../../../api/Playlists";
+import React, { useState } from "react";
+import { Playlist, PLAYLIST_PAGINATION_LIMIT } from "../../../api/Playlists";
 import usePlaylists from "../../../utils/hooks/usePlaylists";
-import Loading from "../../layout/Loading";
+import PlaylistTile from "./PlaylistTile";
+import { Container } from "../../../styles/Containers.styled";
+import InfiniteScroll from "../../ui/infiniteScroll";
 
-const Home: React.FC = () => {
-  const { loading, playlists } = usePlaylists();
+const Play: React.FC = () => {
+  const [offset, setOffset] = useState<number>(0);
+  const { loading, playlists, hasMore } = usePlaylists({ offset });
 
-  if (loading) return <Loading />;
+  const handleLoadMore = () => {
+    setOffset((prevOffset) => prevOffset + PLAYLIST_PAGINATION_LIMIT);
+  };
 
   return (
-    <div>
-      {playlists.map((playlist: Playlist) => (
-        <div
-          key={playlist.id}
-          style={{ display: "flex", marginBottom: "0.5rem" }}
-        >
-          <img
-            src={playlist.images[0]?.url}
-            alt={"img"}
-            style={{ width: "100px", height: "100px" }}
-          />
-          <p>{playlist.name}</p>
-        </div>
-      ))}
-    </div>
+    <Container>
+      <InfiniteScroll
+        list={playlists}
+        renderElement={(playlist: Playlist) => (
+          <PlaylistTile playlist={playlist} />
+        )}
+        hasMore={hasMore}
+        loading={loading}
+        onLoad={handleLoadMore}
+      />
+    </Container>
   );
 };
 
-export default Home;
+export default Play;

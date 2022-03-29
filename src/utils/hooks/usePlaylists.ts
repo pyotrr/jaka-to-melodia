@@ -7,30 +7,40 @@ import api from "../../api";
 type PlaylistsState = {
   playlists: Playlist[];
   loading: boolean;
+  hasMore: boolean;
 };
 
-export default function usePlaylists(): PlaylistsState {
+type UsePlaylistsParams = {
+  offset: number;
+};
+
+export default function usePlaylists({
+  offset,
+}: UsePlaylistsParams): PlaylistsState {
   const { token } = useAuth();
   const isMountedPredicate = useIsMounted();
   const [loading, setLoading] = useState<boolean>(true);
+  const [hasMore, setHasMore] = useState<boolean>(false);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
 
   useEffect(() => {
     if (!token) return;
-    api.Playlists.getUserPlaylists(token)
+    setLoading(true);
+    api.Playlists.getUserPlaylists({ token, offset })
       .then((res) => {
-        if (isMountedPredicate()) {
-          setPlaylists(res.playlists);
-        }
+        if (!isMountedPredicate()) return;
+        setPlaylists((prevPlaylists) => [...prevPlaylists, ...res.playlists]);
+        setHasMore(res.playlists.length > 0);
       })
       .finally(() => setLoading(false));
-  }, [isMountedPredicate, token]);
+  }, [isMountedPredicate, offset, token]);
 
   return useMemo(
     () => ({
       playlists,
       loading,
+      hasMore,
     }),
-    [loading, playlists]
+    [hasMore, loading, playlists]
   );
 }

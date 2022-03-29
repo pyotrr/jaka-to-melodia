@@ -7,10 +7,12 @@ const GlobalStyles = createGlobalStyle`
   }
   html {
     margin: 0;
+    height: 100vh;
   }
   body {
     background-color: #f3f3f3;
     margin: 0;
+    height: 100vh;
   }
   p {
     line-height: 1.5;

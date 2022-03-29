@@ -10,23 +10,33 @@ export type Playlist = {
   };
 };
 
-type GetUserPlaylistsResult = {
+type GetUserPlaylistsResult = RequestResult & {
   playlists: Playlist[];
   total: number;
+  offset: number;
+};
+
+type GetUserPlaylistParams = {
+  token: string;
+  offset: number;
 };
 
 interface IPlaylists {
   getUserPlaylists(
-    token: string
-  ): Promise<RequestResult & GetUserPlaylistsResult>;
+    params: GetUserPlaylistParams
+  ): Promise<GetUserPlaylistsResult>;
 }
 
+export const PLAYLIST_PAGINATION_LIMIT = 20;
+
 const Playlists: IPlaylists = {
-  async getUserPlaylists(
-    token: string
-  ): Promise<RequestResult & GetUserPlaylistsResult> {
+  async getUserPlaylists({
+    token,
+    offset,
+  }): Promise<RequestResult & GetUserPlaylistsResult> {
+    const path = `/me/playlists?limit=${PLAYLIST_PAGINATION_LIMIT}&offset=${offset}`;
     const response = await makeAPIRequest({
-      path: "/me/playlists",
+      path,
       accessToken: token,
       method: "GET",
     });
@@ -35,6 +45,7 @@ const Playlists: IPlaylists = {
       success: Boolean(response.items),
       playlists: response.items,
       total: response.total,
+      offset: response.offset,
     };
   },
 };
