@@ -1,13 +1,14 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Profile from "./Profile";
+import { CenteredContainer } from "../../styles/Containers.styled";
 
 const Main = () => {
   return (
-    <div>
+    <CenteredContainer grow col>
       <Profile />
       <Outlet />
-    </div>
+    </CenteredContainer>
   );
 };
 

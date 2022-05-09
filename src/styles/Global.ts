@@ -21,6 +21,12 @@ const GlobalStyles = createGlobalStyle`
   img {
     max-width: 100%;
   }
+  div#root {
+    height: 100vh;
+    & > div {
+      height: 100%;
+    }
+  }
 `;
 
 export default GlobalStyles;

@@ -1,21 +1,20 @@
 import React, { ReactNode } from "react";
-import {
-  PageContainer as PageContainerStyled,
-  Container,
-} from "../../styles/Containers.styled";
+import { PageContainer as PageContainerStyled } from "../../styles/Containers.styled";
 import { PageTitle } from "../../styles/Typography.styled";
 
 type PageContainerProps = {
   children: ReactNode;
-  title: string;
+  title?: string;
 };
 
 const PageContainer: React.FC<PageContainerProps> = ({ children, title }) => {
   return (
-    <Container>
-      <PageTitle>{title}</PageTitle>
-      <PageContainerStyled>{children}</PageContainerStyled>
-    </Container>
+    <>
+      {title && <PageTitle>{title}</PageTitle>}
+      <PageContainerStyled hasTitle={Boolean(title)}>
+        {children}
+      </PageContainerStyled>
+    </>
   );
 };
 

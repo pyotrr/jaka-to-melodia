@@ -14,8 +14,14 @@ Container.defaultProps = {
   col: true,
 };
 
-export const PageContainer = styled.div`
-  padding: 0 2rem 2rem;
+interface PageContainerProps {
+  hasTitle: boolean;
+}
+
+export const PageContainer = styled.div<PageContainerProps>`
+  padding: ${(props) => (props.hasTitle ? 0 : "2rem")} 2rem 2rem;
+  width: 100%;
+  height: 100%;
   flex-direction: column;
 `;
 
@@ -41,3 +47,15 @@ export const StyledContainer = styled(Container)`
   border: 2px solid black;
   overflow: hidden;
 `;
+
+export const CenteredContainer = styled(Container)<{ grow?: boolean }>`
+  flex-grow: ${(props) => (props.grow ? "1 1 0" : "unset")};
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+CenteredContainer.defaultProps = {
+  grow: false,
+};

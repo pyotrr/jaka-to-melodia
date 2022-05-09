@@ -6,6 +6,7 @@ import LoginRedirect from "../components/views/login/LoginRedirect";
 import AuthGuard from "./AuthGuard";
 import NoAuthGuard from "./NoAuthGuard";
 import Logout from "../components/views/logout";
+import Logo from "../components/ui/Logo";
 
 const Play = lazy(() => import("../components/views/play"));
 
@@ -14,8 +15,7 @@ const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />}>
-          {/* TODO home element*/}
-          <Route path="" element={<div></div>} />
+          <Route path="" element={<Logo />} />
           <Route element={<NoAuthGuard />}>
             <Route
               path="redirect"

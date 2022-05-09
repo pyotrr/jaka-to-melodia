@@ -21,7 +21,8 @@ export const Profile = styled.button`
   svg {
     height: 100%;
     width: 100%;
-    padding: 0.25rem;
+    padding: 0.5rem;
+    color: ${({ theme }) => theme.colors.light};
   }
   img {
     border-radius: 50%;

@@ -16,5 +16,11 @@ export const PlaylistTileStyled = styled(Container)`
   p {
     color: ${({ theme }) => theme.colors.light};
     font-size: 1rem;
+    transition: transform 0.1s ease-in-out;
+  }
+  &:hover {
+    p {
+      transform: scale(1.05);
+    }
   }
 `;
