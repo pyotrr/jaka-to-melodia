@@ -14,7 +14,7 @@ export const PlaylistTileStyled = styled(Container)`
   border-bottom: 1px solid black;
   cursor: pointer;
   p {
-    color: beige;
+    color: ${({ theme }) => theme.colors.light};
     font-size: 1rem;
   }
 `;

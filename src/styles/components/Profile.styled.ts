@@ -57,7 +57,7 @@ export const ProfileMenu = styled.div`
     align-items: center;
     gap: 1rem;
     justify-content: space-between;
-    color: black;
+    color: ${({ theme }) => theme.colors.light};
     text-decoration: none;
     font-size: 1.125rem;
     transition: color ${menuTransitionTime}s ease-in-out;
@@ -66,7 +66,7 @@ export const ProfileMenu = styled.div`
       transition: transform ${menuTransitionTime}s ease-in-out;
     }
     &:hover {
-      color: ${({ theme }) => theme.colors.background};
+      color: ${({ theme }) => theme.colors.primary};
       svg {
         transform: translateX(2px);
       }
