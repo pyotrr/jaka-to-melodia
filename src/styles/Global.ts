@@ -10,9 +10,10 @@ const GlobalStyles = createGlobalStyle`
     height: 100vh;
   }
   body {
-    background-color: #f3f3f3;
+    background-color: darkslategray;
     margin: 0;
     height: 100vh;
+    max-height: 100vh;
   }
   p {
     line-height: 1.5;

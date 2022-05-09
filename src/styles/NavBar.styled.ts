@@ -7,4 +7,7 @@ export const NavBar = styled.nav`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  a {
+    color: ${({theme}) => theme.colors.secondary};
+  }
 `;

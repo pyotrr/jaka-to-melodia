@@ -1,5 +1,5 @@
 import React from "react";
-import { LoaderBar, LoadingContainer } from "../../styles/Loader.styled";
+import { LoaderBar, LoadingContainer } from "../../styles/components/Loader.styled";
 
 const Loading: React.FC = () => {
   return (

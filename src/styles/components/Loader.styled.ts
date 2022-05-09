@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { Container } from "./Containers.styled";
+import { Container } from "../Containers.styled";
 
 interface LoaderBarProps {
   animationTime: number;

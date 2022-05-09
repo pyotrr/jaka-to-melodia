@@ -1,6 +1,7 @@
 import Auth from "./Auth";
 import Playlists from "./Playlists";
 import { apiAuthHeader } from "../utils/authorization";
+import Users from "./User";
 
 export type RequestResult = {
   success: boolean;
@@ -62,6 +63,7 @@ export const makeAPIRequest = async ({
 const api = {
   Auth,
   Playlists,
+  Users,
 };
 
 export default api;

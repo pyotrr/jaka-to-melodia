@@ -1,7 +1,15 @@
 import styled from "styled-components";
 
 const Text = styled.p`
-  margin-bottom: 0;
+  margin: 0;
+`;
+
+export const PageTitle = styled.h3`
+  margin: 2.25rem 0;
+  text-align: center;
+  color: beige;
+  font-size: 1.5rem;
+  font-weight: normal;
 `;
 
 export default Text;

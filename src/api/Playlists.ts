@@ -1,4 +1,5 @@
 import { makeAPIRequest, RequestResult } from "./index";
+import getRandomInt from "../utils/getRandomInt";
 
 export type Playlist = {
   id: string;
@@ -21,10 +22,31 @@ type GetUserPlaylistParams = {
   offset: number;
 };
 
+type GetRandomPlaylistTrackResult = RequestResult & {
+  track: {
+    id: string;
+    name: string;
+    artists: Array<{ name: string }>;
+    album: {
+      name: string;
+      images: Array<{ url: string }>;
+    };
+  };
+};
+
+type GetRandomPlaylistParams = {
+  token: string;
+  playlistId: string;
+  totalNumberOfTracks: number;
+};
+
 interface IPlaylists {
   getUserPlaylists(
     params: GetUserPlaylistParams
   ): Promise<GetUserPlaylistsResult>;
+  getRandomPlaylistTrack(
+    params: GetRandomPlaylistParams
+  ): Promise<GetRandomPlaylistTrackResult>;
 }
 
 export const PLAYLIST_PAGINATION_LIMIT = 20;
@@ -46,6 +68,24 @@ const Playlists: IPlaylists = {
       playlists: response.items,
       total: response.total,
       offset: response.offset,
+    };
+  },
+
+  async getRandomPlaylistTrack({
+    playlistId,
+    totalNumberOfTracks,
+    token,
+  }): Promise<GetRandomPlaylistTrackResult> {
+    const offset = getRandomInt(0, totalNumberOfTracks - 1);
+    const path = `/playlists/${playlistId}/tracks?limit=${1}&offset=${offset}`;
+    const response = await makeAPIRequest({
+      path,
+      accessToken: token,
+      method: "GET",
+    });
+    return {
+      success: Boolean(response.items),
+      track: response.items[0]?.track,
     };
   },
 };

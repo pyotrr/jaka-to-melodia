@@ -1,11 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import TopBar from "./TopBar";
+import Profile from "./Profile";
 
 const Main = () => {
   return (
     <div>
-      <TopBar />
+      <Profile />
       <Outlet />
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useRef } from "react";
-import { Container } from "../../../styles/Containers.styled";
+import { Container, ListContainer } from "../../../styles/Containers.styled";
 import Loading from "../../layout/Loading";
 
 interface InfiniteScrollProps {
@@ -33,7 +33,7 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   );
 
   return (
-    <Container>
+    <ListContainer>
       {list.map((item, index) => {
         if (index === list.length - 1) {
           return (
@@ -46,7 +46,7 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
         }
       })}
       {loading && <Loading />}
-    </Container>
+    </ListContainer>
   );
 };
 
