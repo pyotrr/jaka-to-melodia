@@ -20,9 +20,24 @@ export const PageContainer = styled.div`
 `;
 
 export const ListContainer = styled.div`
-  border-radius: 1rem;
   overflow: auto;
   max-height: 80vh;
+  &::-webkit-scrollbar {
+    width: 0.625rem;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 1rem;
+    background-color: ${({ theme }) => theme.colors.background};
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background-color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+export const StyledContainer = styled(Container)`
+  border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.33);
   border: 2px solid black;
+  overflow: hidden;
 `;

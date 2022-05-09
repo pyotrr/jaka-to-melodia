@@ -1,5 +1,9 @@
 import React, { ReactNode, useCallback, useRef } from "react";
-import { Container, ListContainer } from "../../../styles/Containers.styled";
+import {
+  StyledContainer,
+  ListContainer,
+  Container,
+} from "../../../styles/Containers.styled";
 import Loading from "../../layout/Loading";
 
 interface InfiniteScrollProps {
@@ -33,20 +37,22 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   );
 
   return (
-    <ListContainer>
-      {list.map((item, index) => {
-        if (index === list.length - 1) {
-          return (
-            <Container ref={lastElementRef} key={index}>
-              {renderElement(item)}
-            </Container>
-          );
-        } else {
-          return <Container key={index}>{renderElement(item)}</Container>;
-        }
-      })}
-      {loading && <Loading />}
-    </ListContainer>
+    <StyledContainer>
+      <ListContainer>
+        {list.map((item, index) => {
+          if (index === list.length - 1) {
+            return (
+              <Container ref={lastElementRef} key={index}>
+                {renderElement(item)}
+              </Container>
+            );
+          } else {
+            return <Container key={index}>{renderElement(item)}</Container>;
+          }
+        })}
+        {loading && <Loading />}
+      </ListContainer>
+    </StyledContainer>
   );
 };
 
