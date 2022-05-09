@@ -63,7 +63,7 @@ const Profile = () => {
         <ProfileMenu ref={profileMenuRef}>
           {isLoggedIn ? (
             <>
-              <Link to={"/logout"}>
+              <Link to={"/jaka-to-melodia/logout"}>
                 <MdLogout />
                 <div>Logout</div>
               </Link>
