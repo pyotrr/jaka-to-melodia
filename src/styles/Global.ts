@@ -10,7 +10,7 @@ const GlobalStyles = createGlobalStyle`
     height: 100vh;
   }
   body {
-    background-color: darkslategray;
+    background-color: #1A3C40;
     margin: 0;
     height: 100vh;
     max-height: 100vh;
@@ -20,6 +20,12 @@ const GlobalStyles = createGlobalStyle`
   }
   img {
     max-width: 100%;
+  }
+  div#root {
+    height: 100vh;
+    & > div {
+      height: 100%;
+    }
   }
 `;
 

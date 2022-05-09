@@ -17,8 +17,7 @@ const PlaylistTile: React.FC<PlaylistTileProps> = ({ playlist, onClick }) => {
 
   return (
     <PlaylistTileStyled as="button" row onClick={onPlaylistClick}>
-      {/*TODO add placeholder image or filter out empty playlists*/}
-      <Thumbnail src={playlist.images[0]?.url || ""} />
+      <Thumbnail src={playlist.thumbnailUrl} />
       <Text>{playlist.name}</Text>
     </PlaylistTileStyled>
   );

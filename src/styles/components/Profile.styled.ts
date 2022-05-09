@@ -21,7 +21,8 @@ export const Profile = styled.button`
   svg {
     height: 100%;
     width: 100%;
-    padding: 0.25rem;
+    padding: 0.5rem;
+    color: ${({ theme }) => theme.colors.light};
   }
   img {
     border-radius: 50%;
@@ -57,7 +58,7 @@ export const ProfileMenu = styled.div`
     align-items: center;
     gap: 1rem;
     justify-content: space-between;
-    color: black;
+    color: ${({ theme }) => theme.colors.light};
     text-decoration: none;
     font-size: 1.125rem;
     transition: color ${menuTransitionTime}s ease-in-out;
@@ -66,7 +67,7 @@ export const ProfileMenu = styled.div`
       transition: transform ${menuTransitionTime}s ease-in-out;
     }
     &:hover {
-      color: ${({ theme }) => theme.colors.background};
+      color: ${({ theme }) => theme.colors.primary};
       svg {
         transform: translateX(2px);
       }

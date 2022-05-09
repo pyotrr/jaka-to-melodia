@@ -7,10 +7,10 @@ import { DatabaseProvider } from "./contexts/DatabaseContext";
 
 const theme = {
   colors: {
-    primary: "forestgreen",
-    secondary: "limegreen",
-    background: "darkslategray",
-    altBackground: "lightslategray",
+    primary: "#417D7A",
+    light: "#EDE6DB",
+    background: "#1A3C40",
+    altBackground: "#1D5C63",
   },
 };
 
