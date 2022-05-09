@@ -39,6 +39,8 @@ const grow = keyframes`
   }
 `;
 
+const menuTransitionTime = 0.15;
+
 export const ProfileMenu = styled.div`
   background-color: ${({ theme }) => theme.colors.altBackground};
   position: absolute;
@@ -49,7 +51,7 @@ export const ProfileMenu = styled.div`
   top: 3.5rem;
   animation-name: ${grow};
   animation-iteration-count: 1;
-  animation-duration: 0.2s;
+  animation-duration: ${menuTransitionTime}s;
   a {
     display: flex;
     align-items: center;
@@ -58,10 +60,10 @@ export const ProfileMenu = styled.div`
     color: black;
     text-decoration: none;
     font-size: 1.125rem;
-    transition: color 0.1s ease-in-out;
+    transition: color ${menuTransitionTime}s ease-in-out;
     width: 6rem;
     svg {
-      transition: transform 0.25s ease-in-out;
+      transition: transform ${menuTransitionTime}s ease-in-out;
     }
     &:hover {
       color: ${({ theme }) => theme.colors.background};

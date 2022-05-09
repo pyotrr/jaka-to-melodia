@@ -7,7 +7,7 @@ const AuthGuard: React.FC = () => {
   const { isLoggedIn, loading } = useAuth();
 
   if (loading) return <Loading />;
-  if (!isLoggedIn) return <Navigate to={"/jaka-to-melodia"} replace />;
+  if (!isLoggedIn) return <Navigate to="/" replace />;
 
   return <Outlet />;
 };

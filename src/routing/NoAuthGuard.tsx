@@ -5,7 +5,7 @@ import { Navigate, Outlet } from "react-router-dom";
 const NoAuthGuard: React.FC = () => {
   const { isLoggedIn } = useAuth();
 
-  if (isLoggedIn) return <Navigate to={"/jaka-to-melodia/play"} replace />;
+  if (isLoggedIn) return <Navigate to={"/play"} replace />;
   return <Outlet />;
 };
 

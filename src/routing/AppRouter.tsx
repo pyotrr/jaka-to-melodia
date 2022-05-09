@@ -13,7 +13,7 @@ const AppRouter: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/jaka-to-melodia" element={<Main />}>
+        <Route path="/" element={<Main />}>
           <Route element={<NoAuthGuard />}>
             <Route
               path="redirect"
