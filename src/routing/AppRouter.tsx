@@ -14,6 +14,8 @@ const AppRouter: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />}>
+          {/* TODO home element*/}
+          <Route path="" element={<div></div>} />
           <Route element={<NoAuthGuard />}>
             <Route
               path="redirect"

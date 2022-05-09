@@ -54,7 +54,11 @@ const Profile = () => {
         ref={profilePicRef}
       >
         {isLoggedIn && userProfile ? (
-          <img src={userProfile.profilePicUrl} alt={"Profile"} />
+          <img
+            src={userProfile.profilePicUrl}
+            alt="Profile"
+            draggable="false"
+          />
         ) : (
           <AiOutlineUser />
         )}
