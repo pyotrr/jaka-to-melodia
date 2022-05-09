@@ -18,6 +18,7 @@ export type Playlist = {
   id: string;
   name: string;
   thumbnailUrl: string;
+  coverUrl: string;
   tracks: {
     href: string;
     total: number;
@@ -82,13 +83,17 @@ const Playlists: IPlaylists = {
     return {
       success: Boolean(response.items),
       playlists: response.items
-        .filter((playlist: RawPlaylist) => playlist.images.length)
+        .filter(
+          (playlist: RawPlaylist) =>
+            playlist.images.length && playlist.tracks.total
+        )
         .map((playlist: RawPlaylist) => ({
           id: playlist.id,
           name: playlist.name,
           owner: { name: playlist.owner.display_name },
           tracks: playlist.tracks,
           thumbnailUrl: playlist.images[playlist.images.length - 1].url,
+          coverUrl: playlist.images[0].url,
         })),
       total: response.total,
       offset: response.offset,

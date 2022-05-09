@@ -23,4 +23,7 @@ export const PlaylistTileStyled = styled(Container)`
       transform: scale(1.05);
     }
   }
+  &:focus-visible {
+    outline: none;
+  }
 `;
