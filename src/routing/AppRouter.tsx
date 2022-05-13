@@ -9,6 +9,7 @@ import Logout from "../components/views/logout";
 import Logo from "../components/ui/Logo";
 
 const Play = lazy(() => import("../components/views/play"));
+const Game = lazy(() => import("../components/views/game"));
 
 const AppRouter: React.FC = () => {
   return (
@@ -26,6 +27,10 @@ const AppRouter: React.FC = () => {
             <Route
               path="play"
               element={<SuspendedElement element={<Play />} />}
+            />
+            <Route
+              path="game"
+              element={<SuspendedElement element={<Game />} />}
             />
             <Route path="logout" element={<Logout />} />
           </Route>

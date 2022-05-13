@@ -1,5 +1,6 @@
 import { makeAPIRequest, RequestResult } from "./index";
 import getRandomInt from "../utils/getRandomInt";
+import { Playlist, Track } from "../utils/types";
 
 type RawPlaylist = {
   id: string;
@@ -11,20 +12,6 @@ type RawPlaylist = {
   };
   owner: {
     display_name: string;
-  };
-};
-
-export type Playlist = {
-  id: string;
-  name: string;
-  thumbnailUrl: string;
-  coverUrl: string;
-  tracks: {
-    href: string;
-    total: number;
-  };
-  owner: {
-    name: string;
   };
 };
 
@@ -40,15 +27,7 @@ type GetUserPlaylistParams = {
 };
 
 type GetRandomPlaylistTrackResult = RequestResult & {
-  track: {
-    id: string;
-    name: string;
-    artists: Array<{ name: string }>;
-    album: {
-      name: string;
-      images: Array<{ url: string }>;
-    };
-  };
+  track: Track;
 };
 
 type GetRandomPlaylistParams = {
