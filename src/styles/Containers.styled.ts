@@ -50,6 +50,7 @@ export const StyledContainer = styled(Container)`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.33);
   border: 2px solid black;
   overflow: hidden;
+  isolation: isolate;
 `;
 
 export const CenteredContainer = styled(Container)<{ grow?: boolean }>`

@@ -5,6 +5,7 @@ export const ProfileContainer = styled.div`
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
+  z-index: 2;
 `;
 
 export const Profile = styled.button`
