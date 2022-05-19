@@ -3,15 +3,18 @@ import styled from "styled-components";
 interface ContainerProps {
   row?: boolean;
   col?: boolean;
+  gap?: number;
 }
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: ${(props) => (props.row ? "row" : "column")};
+  gap: ${(props) => `${props.gap}rem`};
 `;
 Container.defaultProps = {
   row: false,
   col: true,
+  gap: 0,
 };
 
 interface PageContainerProps {
@@ -19,6 +22,7 @@ interface PageContainerProps {
 }
 
 export const PageContainer = styled.div<PageContainerProps>`
+  display: flex;
   padding: ${(props) => (props.hasTitle ? 0 : "2rem")} 2rem 2rem;
   width: 100%;
   height: 100%;
@@ -59,3 +63,8 @@ export const CenteredContainer = styled(Container)<{ grow?: boolean }>`
 CenteredContainer.defaultProps = {
   grow: false,
 };
+
+export const Space = styled.div`
+  display: flex;
+  flex: 1 1 0;
+`;

@@ -1,6 +1,7 @@
 import { makeAPIRequest, RequestResult } from "./index";
 import getRandomInt from "../utils/getRandomInt";
 import { Playlist, Track } from "../utils/types";
+import getLocationCode from "../utils/getLocationCode";
 
 type RawPlaylist = {
   id: string;
@@ -85,15 +86,18 @@ const Playlists: IPlaylists = {
     token,
   }): Promise<GetRandomPlaylistTrackResult> {
     const offset = getRandomInt(0, totalNumberOfTracks - 1);
-    const path = `/playlists/${playlistId}/tracks?limit=${1}&offset=${offset}`;
+    const path = `/playlists/${playlistId}/tracks?limit=${1}&offset=${offset}&market=${getLocationCode()}`;
     const response = await makeAPIRequest({
       path,
       accessToken: token,
       method: "GET",
     });
+
+    const track = response.items[0].track;
+
     return {
-      success: Boolean(response.items),
-      track: response.items[0]?.track,
+      success: Boolean(track),
+      track: { ...track, previewUrl: track.preview_url },
     };
   },
 };

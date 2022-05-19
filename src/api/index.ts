@@ -2,6 +2,7 @@ import Auth from "./Auth";
 import Playlists from "./Playlists";
 import { apiAuthHeader } from "../utils/authorization";
 import Users from "./User";
+import Tracks from "./Tracks";
 
 export type RequestResult = {
   success: boolean;
@@ -47,6 +48,9 @@ export const makeAPIRequest = async ({
     })
     .then((res) => {
       if (!res.ok) {
+        if (res.status === 401) {
+          window.location.reload();
+        }
         throw new Error(`Server responded with status ${res.status}`);
       }
       clearTimeout(timeoutId);
@@ -64,6 +68,7 @@ const api = {
   Auth,
   Playlists,
   Users,
+  Tracks,
 };
 
 export default api;

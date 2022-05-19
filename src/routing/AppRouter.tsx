@@ -9,7 +9,7 @@ import Logout from "../components/views/logout";
 import Logo from "../components/ui/Logo";
 
 const Play = lazy(() => import("../components/views/play"));
-const Game = lazy(() => import("../components/views/game"));
+const Game = lazy(() => import("../components/views/game/GamePlaylistGuard"));
 
 const AppRouter: React.FC = () => {
   return (

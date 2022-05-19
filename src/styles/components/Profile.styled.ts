@@ -1,4 +1,5 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
+import { grow } from "../animations";
 
 export const ProfileContainer = styled.div`
   position: fixed;
@@ -26,17 +27,6 @@ export const Profile = styled.button`
   }
   img {
     border-radius: 50%;
-  }
-`;
-
-const grow = keyframes`
-  0% {
-    opacity: 0; 
-    transform: scale(80%);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(100%);
   }
 `;
 

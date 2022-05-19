@@ -15,9 +15,10 @@ export type Playlist = {
 export type Track = {
   id: string;
   name: string;
-  artists: Array<{ name: string }>;
+  artists: Array<{ name: string; id: string }>;
   album: {
     name: string;
     images: Array<{ url: string }>;
   };
+  previewUrl: string;
 };

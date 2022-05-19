@@ -1,15 +1,5 @@
-import styled, { keyframes } from "styled-components";
-
-const slideIn = keyframes`
-  0% {
-    transform: translateY(5rem);
-    opacity: 0
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1
-  }
-`;
+import styled from "styled-components";
+import { slideIn } from "../animations";
 
 export const WelcomeLogo = styled.div`
   display: flex;
