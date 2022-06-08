@@ -1,14 +1,6 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { StyledContainer } from "../Containers.styled";
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
+import { fadeIn } from "../animations";
 
 export const DialogBackground = styled.div`
   position: fixed;

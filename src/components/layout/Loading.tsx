@@ -1,5 +1,9 @@
 import React from "react";
-import { LoaderBar, LoadingContainer } from "../../styles/components/Loader.styled";
+import {
+  LoaderBar,
+  LoadingContainer,
+} from "../../styles/components/Loader.styled";
+import { Space } from "../../styles/Containers.styled";
 
 const Loading: React.FC = () => {
   return (
@@ -10,6 +14,16 @@ const Loading: React.FC = () => {
       <LoaderBar animationTime={1.25} />
       <LoaderBar animationTime={1} />
     </LoadingContainer>
+  );
+};
+
+export const CenteredLoader: React.FC = () => {
+  return (
+    <>
+      <Space />
+      <Loading />
+      <Space />
+    </>
   );
 };
 

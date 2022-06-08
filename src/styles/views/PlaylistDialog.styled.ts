@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { boxShadow } from "../abstract.styled";
 
 export const PlaylistDialog = styled.div`
   display: flex;
@@ -8,7 +9,7 @@ export const PlaylistDialog = styled.div`
     position: absolute;
     border-radius: 1rem;
     border: 2px solid black;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 33%);
+    box-shadow: ${boxShadow};
     top: -3rem;
     z-index: 3;
     left: 50%;
@@ -28,9 +29,5 @@ export const PlaylistDialog = styled.div`
   button {
     margin-top: 1.75rem;
     font-size: 1.25rem;
-    &:hover {
-      color: ${({ theme }) => theme.colors.altBackground};
-      border-color: ${({ theme }) => theme.colors.altBackground};
-    }
   }
 `;

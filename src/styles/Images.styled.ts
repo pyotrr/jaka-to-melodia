@@ -1,9 +1,17 @@
 import styled from "styled-components";
 
-const Thumbnail = styled.img`
-  width: 80px;
-  height: 80px;
+interface ThumbnailProps {
+  size?: number;
+}
+
+const Thumbnail = styled.img<ThumbnailProps>`
+  width: ${(props) => `${props.size}px`};
+  height: ${(props) => `${props.size}px`};
   object-fit: cover;
 `;
+
+Thumbnail.defaultProps = {
+  size: 80,
+};
 
 export default Thumbnail;

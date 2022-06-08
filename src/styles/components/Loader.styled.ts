@@ -1,15 +1,10 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { Container } from "../Containers.styled";
+import { bounceAnimation } from "../animations";
 
 interface LoaderBarProps {
   animationTime: number;
 }
-
-const bounceAnimation = keyframes`
-  0% {transform: scaleY(25%)}
-  50% {transform: scaleY(100%)}
-  100% {transform: scaleY(25%)}
-`;
 
 export const LoaderBar = styled.div<LoaderBarProps>`
   display: flex;

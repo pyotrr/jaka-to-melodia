@@ -1,9 +1,11 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
+import { grow } from "../animations";
 
 export const ProfileContainer = styled.div`
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
+  z-index: 2;
 `;
 
 export const Profile = styled.button`
@@ -29,17 +31,6 @@ export const Profile = styled.button`
   }
 `;
 
-const grow = keyframes`
-  0% {
-    opacity: 0; 
-    transform: scale(80%);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(100%);
-  }
-`;
-
 const menuTransitionTime = 0.15;
 
 export const ProfileMenu = styled.div`
@@ -53,6 +44,9 @@ export const ProfileMenu = styled.div`
   animation-name: ${grow};
   animation-iteration-count: 1;
   animation-duration: ${menuTransitionTime}s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   a {
     display: flex;
     align-items: center;

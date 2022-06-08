@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const Button = styled.button`
+interface ButtonProps {
+  secondary?: boolean;
+}
+
+export const Button = styled.button<ButtonProps>`
   background-color: transparent;
   border-radius: 1rem;
   letter-spacing: 1.25px;
@@ -11,7 +15,13 @@ export const Button = styled.button`
   cursor: pointer;
   transition: color 0.15s ease-in-out, border-color 0.15s ease-in-out;
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-    border-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme, secondary }) =>
+      secondary ? theme.colors.altBackground : theme.colors.primary};
+    border-color: ${({ theme, secondary }) =>
+      secondary ? theme.colors.altBackground : theme.colors.primary};
   }
 `;
+
+Button.defaultProps = {
+  secondary: false,
+};

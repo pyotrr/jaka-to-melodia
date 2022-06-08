@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Playlist, PLAYLIST_PAGINATION_LIMIT } from "../../../api/Playlists";
+import React, { MouseEventHandler, useState } from "react";
+import { PLAYLIST_PAGINATION_LIMIT } from "../../../api/Playlists";
+import { Playlist } from "../../../utils/types";
 import usePlaylists from "../../../utils/hooks/usePlaylists";
 import PlaylistTile from "./PlaylistTile";
 import InfiniteScroll from "../../ui/infiniteScroll";
@@ -9,8 +10,10 @@ import Thumbnail from "../../../styles/Images.styled";
 import { PlaylistDialog } from "../../../styles/views/PlaylistDialog.styled";
 import Text from "../../../styles/Typography.styled";
 import { Button } from "../../../styles/components/Button.styled";
+import { useNavigate } from "react-router-dom";
 
 const Play: React.FC = () => {
+  const navigate = useNavigate();
   const [offset, setOffset] = useState<number>(0);
   const { loading, playlists, hasMore } = usePlaylists({
     offset,
@@ -27,6 +30,11 @@ const Play: React.FC = () => {
     setSelectedPlaylist(playlist);
   };
 
+  const onPlayButtonClick: MouseEventHandler = (e) => {
+    e.preventDefault();
+    navigate("/game", { state: { playlist: selectedPlaylist } });
+  };
+
   return (
     <PageContainer title="Select a playlist">
       {selectedPlaylist && (
@@ -39,7 +47,9 @@ const Play: React.FC = () => {
             <Text>{selectedPlaylist.name}</Text>
             <Text>{`by ${selectedPlaylist.owner.name}`}</Text>
             <Text>{`${selectedPlaylist.tracks.total} tracks`}</Text>
-            <Button>Play</Button>
+            <Button secondary onClick={onPlayButtonClick}>
+              Play
+            </Button>
           </PlaylistDialog>
         </Dialog>
       )}

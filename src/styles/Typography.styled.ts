@@ -1,9 +1,18 @@
 import styled from "styled-components";
 
-const Text = styled.p`
+interface TextProps {
+  secondary?: boolean;
+}
+
+const Text = styled.p<TextProps>`
   margin: 0;
   text-align: left;
+  color: ${(props) => (props.secondary ? props.theme.colors.light : "black")};
 `;
+
+Text.defaultProps = {
+  secondary: false,
+};
 
 export const PageTitle = styled.h3`
   margin: 2.25rem 0;

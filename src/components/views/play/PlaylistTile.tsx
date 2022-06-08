@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from "react";
-import { Playlist } from "../../../api/Playlists";
+import { Playlist } from "../../../utils/types";
 import Text from "../../../styles/Typography.styled";
 import Thumbnail from "../../../styles/Images.styled";
 import { PlaylistTileStyled } from "../../../styles/components/PlaylistTile.styled";

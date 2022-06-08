@@ -7,7 +7,7 @@ import {
 } from "../../styles/components/Profile.styled";
 import { AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { MdLogout, MdLogin } from "react-icons/md";
+import { MdLogout, MdLogin, MdHome } from "react-icons/md";
 import useOutsideClick from "../../utils/hooks/useOutsideClick";
 import api from "../../api";
 
@@ -16,7 +16,33 @@ const disappearKeyframes = [
   { opacity: 0, transform: "scale(80%)" },
 ];
 
-const Profile = () => {
+const ProfileOptions: React.FC = () => {
+  const { isLoggedIn } = useAuth();
+
+  if (!isLoggedIn) {
+    return (
+      <a href={api.Auth.authorizeLink()}>
+        <MdLogin />
+        <div>Log in</div>
+      </a>
+    );
+  }
+
+  return (
+    <>
+      <Link to="/play">
+        <MdHome />
+        <div>Home</div>
+      </Link>
+      <Link to="/logout">
+        <MdLogout />
+        <div>Logout</div>
+      </Link>
+    </>
+  );
+};
+
+const Profile: React.FC = () => {
   const { userProfile, isLoggedIn } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const profilePicRef = useRef<HTMLButtonElement>(null);
@@ -65,21 +91,7 @@ const Profile = () => {
       </ProfileStyled>
       {isMenuOpen && (
         <ProfileMenu ref={profileMenuRef}>
-          {isLoggedIn ? (
-            <>
-              <Link to={"/logout"}>
-                <MdLogout />
-                <div>Logout</div>
-              </Link>
-            </>
-          ) : (
-            <>
-              <a href={api.Auth.authorizeLink()}>
-                <MdLogin />
-                <div>Log in</div>
-              </a>
-            </>
-          )}
+          <ProfileOptions />
         </ProfileMenu>
       )}
     </ProfileContainer>

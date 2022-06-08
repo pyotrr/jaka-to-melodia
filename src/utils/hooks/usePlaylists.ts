@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Playlist } from "../../api/Playlists";
+import { Playlist } from "../types";
 import useIsMounted from "./useIsMounted";
 import { useAuth } from "../../contexts/AuthContext";
 import api from "../../api";

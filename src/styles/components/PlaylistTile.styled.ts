@@ -3,6 +3,7 @@ import { Container } from "../Containers.styled";
 
 export const PlaylistTileStyled = styled(Container)`
   padding: 0.5rem;
+  margin: 0;
   img {
     border-radius: 1rem;
     border: 2px solid black;

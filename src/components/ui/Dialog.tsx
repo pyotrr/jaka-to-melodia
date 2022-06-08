@@ -8,7 +8,7 @@ import useKeyDown from "../../utils/hooks/useKeyDown";
 
 interface DialogProps {
   children: ReactNode;
-  closeDialog: () => void;
+  closeDialog?: () => void;
 }
 
 const fadeOutKeyframes = [{ opacity: 1 }, { opacity: 0 }];
@@ -32,11 +32,19 @@ const Dialog: React.FC<DialogProps> = ({ children, closeDialog }) => {
 
   const animateAndCloseDialog = async () => {
     await animateDialogOut();
-    closeDialog();
+    closeDialog?.();
   };
 
-  useKeyDown("Escape", () => animateAndCloseDialog());
-  useOutsideClick(dialogContentRef, () => animateAndCloseDialog());
+  useKeyDown("Escape", () => {
+    if (closeDialog) {
+      animateAndCloseDialog();
+    }
+  });
+  useOutsideClick(dialogContentRef, () => {
+    if (closeDialog) {
+      animateAndCloseDialog();
+    }
+  });
 
   return (
     <DialogBackground ref={dialogBackgroundRef}>
