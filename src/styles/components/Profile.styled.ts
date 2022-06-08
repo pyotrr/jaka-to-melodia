@@ -44,6 +44,9 @@ export const ProfileMenu = styled.div`
   animation-name: ${grow};
   animation-iteration-count: 1;
   animation-duration: ${menuTransitionTime}s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   a {
     display: flex;
     align-items: center;

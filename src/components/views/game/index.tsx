@@ -6,6 +6,8 @@ import { useAuth } from "../../../contexts/AuthContext";
 import GamePending from "./GamePending";
 import Game from "./Game";
 
+const NUMBER_OF_LIVES = 3;
+
 enum GameStatus {
   Pending,
   Started,
@@ -16,7 +18,28 @@ interface GameState {
   status: GameStatus;
   score: number;
   numberOfGuessedTracks: number;
+  numberOfLives: number;
 }
+
+const fetchNewTracks = async (
+  playlist: Playlist,
+  token: string
+): Promise<{ track: Track; recommended: Track[] }> => {
+  const newTrackResponse = await api.Playlists.getRandomPlaylistTrack({
+    token,
+    totalNumberOfTracks: playlist.tracks.total,
+    playlistId: playlist.id,
+  });
+  const newRecommendationsResponse = await api.Tracks.getRecommendations({
+    trackId: newTrackResponse.track.id,
+    artistId: newTrackResponse.track.artists[0].id,
+    token,
+  });
+  return {
+    recommended: newRecommendationsResponse.tracks,
+    track: newTrackResponse.track,
+  };
+};
 
 const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
   const { token } = useAuth();
@@ -26,29 +49,15 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
     status: GameStatus.Pending,
     score: 0,
     numberOfGuessedTracks: 0,
+    numberOfLives: NUMBER_OF_LIVES,
   });
 
   useEffect(() => {
-    api.Playlists.getRandomPlaylistTrack({
-      token,
-      playlistId: playlist.id,
-      totalNumberOfTracks: playlist.tracks.total,
-    }).then((res) => {
-      const { track, success } = res;
-      if (success) {
-        setCurrentTrack(track);
-        api.Tracks.getRecommendations({
-          trackId: track.id,
-          artistId: track.artists[0].id,
-          token,
-        }).then((res) => {
-          if (res.success) {
-            setRecommended(res.tracks);
-          }
-        });
-      }
+    fetchNewTracks(playlist, token).then(({ track, recommended }) => {
+      setRecommended(recommended);
+      setCurrentTrack(track);
     });
-  }, [playlist.id, playlist.tracks.total, token]);
+  }, [playlist, token]);
 
   const startGame = useCallback(() => {
     setGameState((prevGameState) => ({
@@ -63,23 +72,29 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
       ...prevGameState,
       score: prevGameState.score + 1,
     }));
-    const newTrackResponse = await api.Playlists.getRandomPlaylistTrack({
-      token,
-      totalNumberOfTracks: playlist.tracks.total,
-      playlistId: playlist.id,
-    });
-    if (newTrackResponse.success) {
-      setCurrentTrack(newTrackResponse.track);
+    const { recommended, track } = await fetchNewTracks(playlist, token);
+    setCurrentTrack(track);
+    setRecommended(recommended);
+  }, [playlist, token]);
+
+  const onWrongGuess = useCallback(async () => {
+    setRecommended(null);
+    if (gameState.numberOfLives === 1) {
+      setGameState((prevGameState) => ({
+        ...prevGameState,
+        numberOfLives: 0,
+        status: GameStatus.Lost,
+      }));
+      return;
     }
-    const newRecommendationsResponse = await api.Tracks.getRecommendations({
-      trackId: newTrackResponse.track.id,
-      artistId: newTrackResponse.track.artists[0].id,
-      token,
-    });
-    if (newRecommendationsResponse.success) {
-      setRecommended(newRecommendationsResponse.tracks);
-    }
-  }, [playlist.id, playlist.tracks.total, token]);
+    setGameState((prevGameState) => ({
+      ...prevGameState,
+      numberOfLives: prevGameState.numberOfLives - 1,
+    }));
+    const { recommended, track } = await fetchNewTracks(playlist, token);
+    setCurrentTrack(track);
+    setRecommended(recommended);
+  }, [gameState.numberOfLives, playlist, token]);
 
   return (
     <PageContainer title={playlist.name}>
@@ -91,6 +106,7 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
           track={currentTrack}
           recommendedTracks={recommended}
           onSuccess={onSuccessfulGuess}
+          onWrongGuess={onWrongGuess}
         />
       )}
     </PageContainer>

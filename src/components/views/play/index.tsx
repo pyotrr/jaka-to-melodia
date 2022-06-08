@@ -47,7 +47,9 @@ const Play: React.FC = () => {
             <Text>{selectedPlaylist.name}</Text>
             <Text>{`by ${selectedPlaylist.owner.name}`}</Text>
             <Text>{`${selectedPlaylist.tracks.total} tracks`}</Text>
-            <Button onClick={onPlayButtonClick}>Play</Button>
+            <Button secondary onClick={onPlayButtonClick}>
+              Play
+            </Button>
           </PlaylistDialog>
         </Dialog>
       )}

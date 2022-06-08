@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { shrink } from "../animations";
+import { Container } from "../Containers.styled";
+import { boxShadow } from "../abstract.styled";
 
 export const ThreeTwoOne = styled.div`
   text-align: center;
-  color: ${({ theme }) => theme.colors.light};
   font-size: 8rem;
   & > p {
+    color: ${({ theme }) => theme.colors.light};
     text-align: center;
     position: absolute;
     width: 10rem;
@@ -24,4 +26,11 @@ export const ThreeTwoOne = styled.div`
       animation-delay: 2s;
     }
   }
+`;
+
+export const TrackTileStyled = styled(Container)`
+  img {
+    box-shadow: ${boxShadow};
+  }
+  margin-bottom: 3rem;
 `;

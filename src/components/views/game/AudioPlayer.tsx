@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import {
   AudioVisualizerContainer,
   AudioVisualizerBar,
@@ -7,6 +7,7 @@ import { Space } from "../../../styles/Containers.styled";
 
 interface AudioVisualizerProps {
   audioPath: string;
+  audioElement: MutableRefObject<HTMLAudioElement>;
 }
 const SAMPLE_RATE = 44100;
 const MAX_FREQ = SAMPLE_RATE / 2;
@@ -18,8 +19,11 @@ const FREQ_PER_BUCKET = MAX_FREQ / NUMBER_OF_BUCKETS;
 const FREQ_IDX_100 = Math.floor(100 / FREQ_PER_BUCKET);
 const FREQ_IDX_10000 = Math.floor(10_000 / FREQ_PER_BUCKET);
 
-const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioPath }) => {
-  const audioElement = useRef<HTMLAudioElement>(new Audio(audioPath));
+const AudioPlayer: React.FC<AudioVisualizerProps> = ({
+  audioPath,
+  audioElement,
+}) => {
+  const audioElementRef = useRef<HTMLAudioElement>(audioElement.current);
   const audioContext = useRef<AudioContext>(new AudioContext());
   const analyzer = useRef<AnalyserNode | null>(null);
 
@@ -56,15 +60,16 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioPath }) => {
   }, []);
 
   useEffect(() => {
-    audioElement.current.crossOrigin = "anonymous";
-    audioElement.current.volume = 0.5;
-    audioElement.current.play().then(() => {
+    audioElementRef.current.src = audioPath;
+    audioElementRef.current.crossOrigin = "anonymous";
+    audioElementRef.current.volume = 0.5;
+    audioElementRef.current.play().then(() => {
       requestRef.current = requestAnimationFrame(animate);
     });
-    audioElement.current.onended = () =>
+    audioElementRef.current.onended = () =>
       cancelAnimationFrame(requestRef.current);
     const audioSource = audioContext.current.createMediaElementSource(
-      audioElement.current
+      audioElementRef.current
     );
     analyzer.current = audioContext.current.createAnalyser();
     analyzer.current.smoothingTimeConstant = 0.85;
@@ -72,10 +77,10 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioPath }) => {
       .connect(analyzer.current)
       .connect(audioContext.current.destination);
     analyzer.current.fftSize = FFT_SIZE;
-  }, [animate]);
+  }, [animate, audioPath]);
 
   useEffect(() => {
-    const currentAudioElement = audioElement.current;
+    const currentAudioElement = audioElementRef.current;
     return () => {
       currentAudioElement.pause();
       cancelAnimationFrame(requestRef.current);
@@ -94,4 +99,4 @@ const AudioVisualizer: React.FC<AudioVisualizerProps> = ({ audioPath }) => {
   );
 };
 
-export default AudioVisualizer;
+export default AudioPlayer;

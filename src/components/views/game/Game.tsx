@@ -1,24 +1,36 @@
-import React, { MouseEventHandler, useMemo, useState } from "react";
+import React, { MouseEventHandler, useMemo, useRef, useState } from "react";
 import { Track } from "../../../utils/types";
 import { CenteredLoader } from "../../layout/Loading";
 import { Space } from "../../../styles/Containers.styled";
-import AudioVisualizer from "./AudioVisualizer";
+import AudioPlayer from "./AudioPlayer";
 import shuffleArray from "../../../utils/shuffleArray";
 import { Container } from "../../../styles/Containers.styled";
 import { Button } from "../../../styles/components/Button.styled";
-import Dialog from "../../ui/Dialog";
-import Text, { PageTitle } from "../../../styles/Typography.styled";
-import Thumbnail from "../../../styles/Images.styled";
+import CorrectGuessDialog from "./CorrectGuessDialog";
+import NOOP from "../../../utils/NOOP";
+import WrongGuessDialog from "./WrongGuessDialog";
 
 interface GameProps {
   track: Track | null;
   recommendedTracks: Track[] | null;
   onSuccess: () => Promise<void>;
+  onWrongGuess: () => Promise<void>;
 }
 
-const Game: React.FC<GameProps> = ({ track, recommendedTracks, onSuccess }) => {
+const isBadGuessATrack = (badGuess: Track | null): badGuess is Track => {
+  return Boolean(badGuess);
+};
+
+const Game: React.FC<GameProps> = ({
+  track,
+  recommendedTracks,
+  onSuccess,
+  onWrongGuess,
+}) => {
   const [success, setSuccess] = useState(false);
   const [badGuess, setBadGuess] = useState<Track | null>(null);
+
+  const audioElement = useRef<HTMLAudioElement>(new Audio());
 
   const randomOrderTracks = useMemo(() => {
     if (!track || !recommendedTracks) return [];
@@ -27,43 +39,39 @@ const Game: React.FC<GameProps> = ({ track, recommendedTracks, onSuccess }) => {
 
   if (!track || !recommendedTracks) return <CenteredLoader />;
 
-  const onTrackButtonClick: MouseEventHandler = (e) => {
+  const onTrackButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
+    audioElement.current.pause();
+    audioElement.current = new Audio();
     const clickedButton = e.target as HTMLButtonElement;
     if (clickedButton.value === track.id) {
       setSuccess(true);
     }
-    setBadGuess(
-      recommendedTracks.find(
-        (fakeTrack) => fakeTrack.id === clickedButton.value
-      ) || null
+    const guessedTrack = recommendedTracks.find(
+      (fakeTrack) => fakeTrack.id === clickedButton.value
     );
+    setBadGuess(guessedTrack || null);
   };
 
   return (
     <>
       {success && (
-        <Dialog>
-          <PageTitle>Correct!</PageTitle>
-          <Container row>
-            <Thumbnail
-              src={track.album.images[0].url}
-              alt={"Track album cover"}
-            />
-            <Container col>
-              <Text>{track.name}</Text>
-              <Text>{track.album.name}</Text>
-            </Container>
-          </Container>
-          <Button
-            onClick={() => {
-              setSuccess(false);
-              onSuccess();
-            }}
-          >
-            Next!
-          </Button>
-        </Dialog>
+        <CorrectGuessDialog
+          track={track}
+          onNextClick={() => {
+            setSuccess(false);
+            onSuccess().catch(NOOP);
+          }}
+        />
+      )}
+      {isBadGuessATrack(badGuess) && (
+        <WrongGuessDialog
+          track={badGuess}
+          onNextClick={() => {
+            setBadGuess(null);
+            onWrongGuess().catch(NOOP);
+          }}
+        />
       )}
       <Space />
       <Container col gap={1.5}>
@@ -74,7 +82,7 @@ const Game: React.FC<GameProps> = ({ track, recommendedTracks, onSuccess }) => {
         ))}
       </Container>
       <Space />
-      <AudioVisualizer audioPath={track.previewUrl} />
+      <AudioPlayer audioPath={track.previewUrl} audioElement={audioElement} />
     </>
   );
 };
