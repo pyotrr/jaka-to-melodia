@@ -5,7 +5,7 @@ import api from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
 import GamePending from "./GamePending";
 import Game from "./Game";
-import ScoreWidget from "./ScoreWidget";
+import ScoreWidget from "./GameStateWidget";
 import { NUMBER_OF_LIVES } from "../../../utils/contants";
 
 enum GameStatus {

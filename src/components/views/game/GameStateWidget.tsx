@@ -13,7 +13,10 @@ interface ScoreWidgetProps {
   numberOfLives: number;
 }
 
-const ScoreWidget: React.FC<ScoreWidgetProps> = ({ score, numberOfLives }) => {
+const GameStateWidget: React.FC<ScoreWidgetProps> = ({
+  score,
+  numberOfLives,
+}) => {
   const lives = useMemo(
     () =>
       Array(NUMBER_OF_LIVES)
@@ -22,7 +25,7 @@ const ScoreWidget: React.FC<ScoreWidgetProps> = ({ score, numberOfLives }) => {
     [numberOfLives]
   );
   return (
-    <ScoreWidgetStyled>
+    <ScoreWidgetStyled lost={numberOfLives === 0}>
       <HeartContainer row gap={1}>
         {lives.map((isHeartFull, i) =>
           isHeartFull ? <FaHeart key={i} /> : <FaHeartBroken key={i} />
@@ -35,4 +38,4 @@ const ScoreWidget: React.FC<ScoreWidgetProps> = ({ score, numberOfLives }) => {
   );
 };
 
-export default React.memo(ScoreWidget);
+export default React.memo(GameStateWidget);
