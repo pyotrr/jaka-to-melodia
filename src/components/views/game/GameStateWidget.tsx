@@ -28,7 +28,11 @@ const GameStateWidget: React.FC<ScoreWidgetProps> = ({
     <ScoreWidgetStyled lost={numberOfLives === 0}>
       <HeartContainer row gap={1}>
         {lives.map((isHeartFull, i) =>
-          isHeartFull ? <FaHeart key={i} /> : <FaHeartBroken key={i} />
+          isHeartFull ? (
+            <FaHeart key={i} />
+          ) : (
+            <FaHeartBroken key={i} opacity={0.5} />
+          )
         )}
       </HeartContainer>
       <Text center secondary>

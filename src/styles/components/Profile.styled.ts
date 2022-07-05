@@ -56,7 +56,7 @@ export const ProfileMenu = styled.div`
     text-decoration: none;
     font-size: 1.125rem;
     transition: color ${menuTransitionTime}s ease-in-out;
-    width: 6rem;
+    width: 8rem;
     svg {
       transition: transform ${menuTransitionTime}s ease-in-out;
     }

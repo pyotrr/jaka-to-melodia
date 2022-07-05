@@ -7,6 +7,7 @@ import GamePending from "./GamePending";
 import Game from "./Game";
 import ScoreWidget from "./GameStateWidget";
 import { NUMBER_OF_LIVES } from "../../../utils/contants";
+import History from "../../../idb/respositories/history";
 
 enum GameStatus {
   Pending,
@@ -82,6 +83,13 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
   const onWrongGuess = useCallback(async () => {
     setRecommended(null);
     if (gameState.numberOfLives === 1) {
+      await History.addHistoryEntry({
+        playlistId: playlist.id,
+        score: gameState.score,
+        name: playlist.name,
+        date: Date.now(),
+        thumbnailUrl: playlist.thumbnailUrl,
+      });
       setGameState((prevGameState) => ({
         ...prevGameState,
         numberOfLives: 0,
@@ -96,7 +104,7 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
     const { recommended, track } = await fetchNewTracks(playlist, token);
     setCurrentTrack(track);
     setRecommended(recommended);
-  }, [gameState.numberOfLives, playlist, token]);
+  }, [gameState.numberOfLives, playlist, token, gameState.score]);
 
   return (
     <PageContainer title={playlist.name}>

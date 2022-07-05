@@ -4,6 +4,7 @@ export type ResponseUser = {
   id: string;
   name: string;
   images: Array<{ url: string }>;
+  country: string;
 };
 
 type GetUserProfileResponse = RequestResult & { user: ResponseUser };
@@ -19,12 +20,14 @@ const Users: IUser = {
       accessToken: token,
       method: "GET",
     });
+    console.log(response);
     return {
       success: Boolean(response.id),
       user: {
         id: response.id,
         name: response.display_name,
         images: response.images,
+        country: response.country,
       },
     };
   },

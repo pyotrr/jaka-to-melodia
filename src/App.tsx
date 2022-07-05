@@ -3,7 +3,6 @@ import AppRouter from "./routing/AppRouter";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/Global";
 import { AuthProvider } from "./contexts/AuthContext";
-import { DatabaseProvider } from "./contexts/DatabaseContext";
 
 const theme = {
   colors: {
@@ -18,11 +17,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <DatabaseProvider>
-        <AuthProvider>
-          <AppRouter />
-        </AuthProvider>
-      </DatabaseProvider>
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

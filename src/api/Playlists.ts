@@ -1,7 +1,7 @@
 import { makeAPIRequest, RequestResult } from "./index";
 import getRandomInt from "../utils/getRandomInt";
 import { Playlist, Track } from "../utils/types";
-import getLocationCode from "../utils/getLocationCode";
+import Users from "../idb/respositories/users";
 
 type RawPlaylist = {
   id: string;
@@ -37,6 +37,15 @@ type GetRandomPlaylistParams = {
   totalNumberOfTracks: number;
 };
 
+type GetPlaylistParams = {
+  token: string;
+  id: string;
+};
+
+type GetPlaylistResult = RequestResult & {
+  playlist: Playlist;
+};
+
 interface IPlaylists {
   getUserPlaylists(
     params: GetUserPlaylistParams
@@ -44,6 +53,7 @@ interface IPlaylists {
   getRandomPlaylistTrack(
     params: GetRandomPlaylistParams
   ): Promise<GetRandomPlaylistTrackResult>;
+  getPlaylist(params: GetPlaylistParams): Promise<GetPlaylistResult>;
 }
 
 export const PLAYLIST_PAGINATION_LIMIT = 20;
@@ -86,7 +96,8 @@ const Playlists: IPlaylists = {
     token,
   }): Promise<GetRandomPlaylistTrackResult> {
     const offset = getRandomInt(0, totalNumberOfTracks - 1);
-    const path = `/playlists/${playlistId}/tracks?limit=${1}&offset=${offset}&market=${getLocationCode()}`;
+    const { country } = await Users.getUser();
+    const path = `/playlists/${playlistId}/tracks?limit=${1}&offset=${offset}&market=${country}`;
     const response = await makeAPIRequest({
       path,
       accessToken: token,
@@ -98,6 +109,32 @@ const Playlists: IPlaylists = {
     return {
       success: Boolean(track),
       track: { ...track, previewUrl: track.preview_url },
+    };
+  },
+
+  async getPlaylist({
+    id,
+    token,
+  }: GetPlaylistParams): Promise<GetPlaylistResult> {
+    const { country } = await Users.getUser();
+    const path = `/playlists/${id}?market=${country}`;
+
+    const response: RawPlaylist = await makeAPIRequest({
+      path: path,
+      method: "GET",
+      accessToken: token,
+    });
+
+    return {
+      success: Boolean(response),
+      playlist: {
+        id: response.id,
+        name: response.name,
+        owner: { name: response.owner.display_name },
+        tracks: response.tracks,
+        thumbnailUrl: response.images[response.images.length - 1].url,
+        coverUrl: response.images[0].url,
+      },
     };
   },
 };

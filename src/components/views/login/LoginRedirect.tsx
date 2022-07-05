@@ -4,12 +4,12 @@ import Loading from "../../layout/Loading";
 import api from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
 import { setCookie } from "../../../utils/cookies";
-import { useDatabase } from "../../../contexts/DatabaseContext";
+import { User } from "../../../idb";
+import Users from "../../../idb/respositories/users";
 
 const LoginRedirect: React.FC = () => {
   const { code } = useURLSearchParams();
   const { setToken, setUserProfile } = useAuth();
-  const { database } = useDatabase();
 
   useEffect(() => {
     if (!code) return;
@@ -32,17 +32,18 @@ const LoginRedirect: React.FC = () => {
         if (!success) {
           throw new Error("Could not get user profile");
         }
-        const userProfile = {
+        const userProfile: User = {
           id: user.id,
           name: user.name,
           profilePicUrl: user.images[0].url,
+          country: user.country,
         };
         setUserProfile(userProfile);
-        await database.put("users", userProfile);
+        await Users.addUser(userProfile);
       }
       return null;
     });
-  }, [code, database, setToken, setUserProfile]);
+  }, [code, setToken, setUserProfile]);
 
   return <Loading />;
 };

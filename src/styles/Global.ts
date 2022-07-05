@@ -10,7 +10,7 @@ const GlobalStyles = createGlobalStyle`
     height: 100vh;
   }
   body {
-    background-color: #1A3C40;
+    background: radial-gradient(circle at center, rgba(29,92,99,1) 0%, rgba(26,60,64,1) 100%);
     margin: 0;
     height: 100vh;
     max-height: 100vh;
