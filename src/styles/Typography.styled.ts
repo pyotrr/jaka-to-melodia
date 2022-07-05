@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
 interface TextProps {
+  center?: boolean;
   secondary?: boolean;
 }
 
 const Text = styled.p<TextProps>`
   margin: 0;
-  text-align: left;
+  text-align: ${(props) => (props.center ? "center" : "left")};
   color: ${(props) => (props.secondary ? props.theme.colors.light : "black")};
 `;
 

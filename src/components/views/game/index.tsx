@@ -5,8 +5,9 @@ import api from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
 import GamePending from "./GamePending";
 import Game from "./Game";
-
-const NUMBER_OF_LIVES = 3;
+import ScoreWidget from "./GameStateWidget";
+import { NUMBER_OF_LIVES } from "../../../utils/contants";
+import History from "../../../idb/respositories/history";
 
 enum GameStatus {
   Pending,
@@ -17,7 +18,7 @@ enum GameStatus {
 interface GameState {
   status: GameStatus;
   score: number;
-  numberOfGuessedTracks: number;
+  songNumber: number;
   numberOfLives: number;
 }
 
@@ -48,7 +49,7 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
   const [gameState, setGameState] = useState<GameState>({
     status: GameStatus.Pending,
     score: 0,
-    numberOfGuessedTracks: 0,
+    songNumber: 0,
     numberOfLives: NUMBER_OF_LIVES,
   });
 
@@ -63,6 +64,7 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
     setGameState((prevGameState) => ({
       ...prevGameState,
       status: GameStatus.Started,
+      songNumber: prevGameState.songNumber + 1,
     }));
   }, []);
 
@@ -71,6 +73,7 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
     setGameState((prevGameState) => ({
       ...prevGameState,
       score: prevGameState.score + 1,
+      songNumber: prevGameState.songNumber + 1,
     }));
     const { recommended, track } = await fetchNewTracks(playlist, token);
     setCurrentTrack(track);
@@ -80,6 +83,13 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
   const onWrongGuess = useCallback(async () => {
     setRecommended(null);
     if (gameState.numberOfLives === 1) {
+      await History.addHistoryEntry({
+        playlistId: playlist.id,
+        score: gameState.score,
+        name: playlist.name,
+        date: Date.now(),
+        thumbnailUrl: playlist.thumbnailUrl,
+      });
       setGameState((prevGameState) => ({
         ...prevGameState,
         numberOfLives: 0,
@@ -94,12 +104,18 @@ const GameLogic: React.FC<{ playlist: Playlist }> = ({ playlist }) => {
     const { recommended, track } = await fetchNewTracks(playlist, token);
     setCurrentTrack(track);
     setRecommended(recommended);
-  }, [gameState.numberOfLives, playlist, token]);
+  }, [gameState.numberOfLives, playlist, token, gameState.score]);
 
   return (
     <PageContainer title={playlist.name}>
-      {gameState.status === GameStatus.Pending && (
+      {gameState.status === GameStatus.Pending ? (
         <GamePending startGame={startGame} />
+      ) : (
+        <ScoreWidget
+          score={gameState.score}
+          songNumber={gameState.songNumber}
+          numberOfLives={gameState.numberOfLives}
+        />
       )}
       {gameState.status === GameStatus.Started && (
         <Game

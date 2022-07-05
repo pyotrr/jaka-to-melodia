@@ -14,15 +14,13 @@ export const PlaylistTileStyled = styled(Container)`
   border: none;
   border-bottom: 1px solid black;
   cursor: pointer;
+  transition: opacity 0.1s ease-in;
   p {
     color: ${({ theme }) => theme.colors.light};
     font-size: 1rem;
-    transition: transform 0.1s ease-in-out;
   }
   &:hover {
-    p {
-      transform: scale(1.05);
-    }
+    opacity: 0.75;
   }
   &:focus-visible {
     outline: none;

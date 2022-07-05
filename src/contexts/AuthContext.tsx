@@ -9,7 +9,9 @@ import React, {
 } from "react";
 import { deleteCookie, getCookie } from "../utils/cookies";
 import api from "../api";
-import { useDatabase, User } from "./DatabaseContext";
+import { User } from "../idb";
+import Users from "../idb/respositories/users";
+import database from "../idb";
 
 interface AuthContextState {
   isLoggedIn: boolean;
@@ -33,7 +35,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [token, setToken] = useState<string>("");
   const refreshToken = getCookie("refreshToken");
-  const { database } = useDatabase();
 
   useEffect(() => {
     if (!token && !refreshToken) {
@@ -56,19 +57,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (userProfile || !token) return;
-    database.getAll("users").then((users) => {
-      if (users.length) {
-        setUserProfile(users[0]);
+    Users.getUser().then((user) => {
+      if (user) {
+        setUserProfile(user);
       }
     });
-  }, [database, token, userProfile]);
+  }, [token, userProfile]);
 
   const logout = useCallback(async () => {
     deleteCookie("refreshToken");
     setUserProfile(null);
     setToken("");
-    await database.clear("users");
-  }, [database]);
+    await database.clearObjectStore("users");
+  }, []);
 
   const memoizedValue = useMemo(
     () => ({

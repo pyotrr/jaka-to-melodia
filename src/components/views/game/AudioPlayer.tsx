@@ -12,7 +12,7 @@ interface AudioVisualizerProps {
 const SAMPLE_RATE = 44100;
 const MAX_FREQ = SAMPLE_RATE / 2;
 
-const FFT_SIZE = 128;
+const FFT_SIZE = 256;
 const NUMBER_OF_BUCKETS = FFT_SIZE / 2;
 const FREQ_PER_BUCKET = MAX_FREQ / NUMBER_OF_BUCKETS;
 

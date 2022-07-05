@@ -7,7 +7,7 @@ import {
 } from "../../styles/components/Profile.styled";
 import { AiOutlineUser } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { MdLogout, MdLogin, MdHome } from "react-icons/md";
+import { MdLogout, MdLogin, MdHome, MdHistory } from "react-icons/md";
 import useOutsideClick from "../../utils/hooks/useOutsideClick";
 import api from "../../api";
 
@@ -33,6 +33,10 @@ const ProfileOptions: React.FC = () => {
       <Link to="/play">
         <MdHome />
         <div>Home</div>
+      </Link>
+      <Link to="/history">
+        <MdHistory />
+        <div>History</div>
       </Link>
       <Link to="/logout">
         <MdLogout />

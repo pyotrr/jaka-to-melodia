@@ -1,6 +1,6 @@
 import { makeAPIRequest, RequestResult } from "./index";
-import getLocationCode from "../utils/getLocationCode";
 import { Track } from "../utils/types";
+import Users from "../idb/respositories/users";
 
 interface ITracks {
   getRecommendations({
@@ -16,7 +16,8 @@ interface ITracks {
 
 const Tracks: ITracks = {
   async getRecommendations({ trackId, token, artistId }): Promise<any> {
-    const path = `/recommendations?seed_tracks=${trackId}&seed_artists=${artistId}&limit=3&market=${getLocationCode()}`;
+    const { country } = await Users.getUser();
+    const path = `/recommendations?seed_tracks=${trackId}&seed_artists=${artistId}&limit=3&market=${country}`;
     const response = await makeAPIRequest({
       path,
       accessToken: token,
