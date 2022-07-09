@@ -14,6 +14,7 @@ export type HistoryEntry = {
   score: number;
   date: number;
   thumbnailUrl: string;
+  numberOfLives: number;
 };
 
 interface ObjectStores {

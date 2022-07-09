@@ -53,6 +53,11 @@ interface IPlaylists {
   getRandomPlaylistTrack(
     params: GetRandomPlaylistParams
   ): Promise<GetRandomPlaylistTrackResult>;
+  getPlaylistTrack(params: {
+    token: string;
+    playlistId: string;
+    index: number;
+  }): Promise<GetRandomPlaylistTrackResult>;
   getPlaylist(params: GetPlaylistParams): Promise<GetPlaylistResult>;
 }
 
@@ -135,6 +140,27 @@ const Playlists: IPlaylists = {
         thumbnailUrl: response.images[response.images.length - 1].url,
         coverUrl: response.images[0].url,
       },
+    };
+  },
+
+  async getPlaylistTrack({
+    token,
+    playlistId,
+    index,
+  }): Promise<GetRandomPlaylistTrackResult> {
+    const { country } = await Users.getUser();
+    const path = `/playlists/${playlistId}/tracks?limit=${1}&offset=${index}&market=${country}`;
+    const response = await makeAPIRequest({
+      path,
+      accessToken: token,
+      method: "GET",
+    });
+
+    const track = response.items[0].track;
+
+    return {
+      success: Boolean(track),
+      track: { ...track, previewUrl: track.preview_url },
     };
   },
 };

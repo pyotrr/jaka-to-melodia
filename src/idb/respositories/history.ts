@@ -11,7 +11,8 @@ const History: IHistory = {
     if (!database.dao) {
       throw new DatabaseNotInitializedError();
     }
-    return database.dao.getAll("history");
+    const entries = await database.dao.getAll("history");
+    return entries.reverse();
   },
 
   async addHistoryEntry(entry) {

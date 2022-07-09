@@ -39,11 +39,11 @@ const History: React.FC = () => {
           }}
         />
       )}
-      <ListContainer>
+      <StyledContainer>
         {loading ? (
           <Loading />
         ) : (
-          <StyledContainer>
+          <ListContainer>
             {historyEntries.map((entry) => (
               <HistoryEntry
                 key={entry.date}
@@ -51,9 +51,9 @@ const History: React.FC = () => {
                 onClick={onEntryClick}
               />
             ))}
-          </StyledContainer>
+          </ListContainer>
         )}
-      </ListContainer>
+      </StyledContainer>
     </PageContainer>
   );
 };
