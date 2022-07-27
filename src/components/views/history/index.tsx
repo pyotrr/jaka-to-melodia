@@ -7,6 +7,7 @@ import Loading from "../../layout/Loading";
 import { StyledContainer } from "../../../styles/Containers.styled";
 import HistoryEntry from "./HistoryEntry";
 import HistoryEntryDialog from "./HistoryEntryDialog";
+import Text from "../../../styles/Typography.styled";
 
 const History: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -39,21 +40,28 @@ const History: React.FC = () => {
           }}
         />
       )}
-      <StyledContainer>
-        {loading ? (
-          <Loading />
-        ) : (
-          <ListContainer>
-            {historyEntries.map((entry) => (
-              <HistoryEntry
-                key={entry.date}
-                entry={entry}
-                onClick={onEntryClick}
-              />
-            ))}
-          </ListContainer>
-        )}
-      </StyledContainer>
+      {Boolean(!loading && !historyEntries.length) && (
+        <Text secondary center>
+          You have not played any games yet!
+        </Text>
+      )}
+      {Boolean(loading || historyEntries.length) && (
+        <StyledContainer>
+          {loading ? (
+            <Loading />
+          ) : (
+            <ListContainer>
+              {historyEntries.map((entry) => (
+                <HistoryEntry
+                  key={entry.date}
+                  entry={entry}
+                  onClick={onEntryClick}
+                />
+              ))}
+            </ListContainer>
+          )}
+        </StyledContainer>
+      )}
     </PageContainer>
   );
 };
