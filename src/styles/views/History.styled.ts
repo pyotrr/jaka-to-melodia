@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { boxShadow } from "../abstract.styled";
 
 export const HistoryEntry = styled.button`
+  position: relative;
   background-color: transparent;
   border: none;
   font-size: 1rem;
@@ -37,6 +38,25 @@ export const HistoryEntry = styled.button`
   &:focus-visible {
     outline: none;
   }
+
+  div:last-of-type {
+    position: relative;
+    transform: none;
+    top: unset;
+    left: unset;
+    svg {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+    margin: 0 1rem 0 2rem;
+  }
+`;
+
+export const EntryWinStatusEmoji = styled.div`
+  position: absolute;
+  font-size: 2.5rem;
+  left: 72px;
+  top: -2px;
 `;
 
 export const HistoryEntryTile = styled.div`

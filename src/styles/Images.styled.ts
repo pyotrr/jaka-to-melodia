@@ -7,6 +7,8 @@ interface ThumbnailProps {
 const Thumbnail = styled.img<ThumbnailProps>`
   width: ${(props) => `${props.size}px`};
   height: ${(props) => `${props.size}px`};
+  min-width: ${(props) => `${props.size}px`};
+  min-height: ${(props) => `${props.size}px`};
   object-fit: cover;
 `;
 
